@@ -33,14 +33,14 @@ int main(void)
 	}
 
 	tokens[i] = strtok(buf, " ");
-
 	while (tokens[i])
 	{
-		++i;
+		i++;
 		tokens[i] = strtok(NULL, " ");
 	}
-
+	
 	i = 0;
+
 	while (tokens[i])
 	{
 		printf("tokens[%d]: %s\n", i, tokens[i]);
