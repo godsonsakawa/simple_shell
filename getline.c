@@ -20,7 +20,8 @@ int main(void)
 	}
 
 	getline(&buf, &bytes, stdin);
-	printf(" %s ", buf);
+	printf("%s", buf);
+	free(buf);
 
 	return (0);
 }
