@@ -38,7 +38,7 @@ int main(void)
 		i++;
 		tokens[i] = strtok(NULL, " ");
 	}
-	
+
 	i = 0;
 
 	while (tokens[i])
