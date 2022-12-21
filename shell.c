@@ -1,6 +1,8 @@
 #include "shell.h"
 
 #define BUFFER_SIZE 256
+
+extern char **environ;
 /**
   * main - A simple shell program.
   * @argc: number of command line arguments.
@@ -31,7 +33,7 @@ int main(int argc, char **argv)
 
 		if (pid == 0)
 		{
-			execve(args[0], args, NULL);
+			execve(args[0], args, environ);
 			perror("./shell");
 			exit(1);
 		}
