@@ -15,21 +15,8 @@ int main(int argc, char **argv)
 		char *line = NULL, *args[BUFFER_SIZE];
 		size_t line_size = 0;
 
-		if (argc > 1)
-		{
-			line = argv[1];
-			line_size = strlen(line);
-		}
-		else
-		{
-			int read = getline(&line, &line_size, stdin);
+		getline(&line, &line_size, stdin);
 
-			if (read == -1)
-			{
-				printf("\n");
-				break;
-			}
-		}
 		line[strcspn(line, "\n")] = 0;
 
 		char *command = strtok(line, " ");
@@ -37,7 +24,10 @@ int main(int argc, char **argv)
 
 		while (command != NULL)
 		{
-			args[i++] = command;
+			if (command[0] != '-')
+			{
+				args[i++] = command;
+			}
 			command = strtok(NULL, " ");
 		}
 		args[i] = NULL;
