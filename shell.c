@@ -16,7 +16,6 @@ int main(int argc, char **argv)
 		size_t line_size = 0;
 
 		getline(&line, &line_size, stdin);
-
 		line[strcspn(line, "\n")] = 0;
 
 		char *command = strtok(line, " ");
@@ -24,21 +23,22 @@ int main(int argc, char **argv)
 
 		while (command != NULL)
 		{
-			if (command[0] != '-')
-			{
-				args[i++] = command;
-			}
+			args[i++] = command;
 			command = strtok(NULL, " ");
 		}
 		args[i] = NULL;
 		pid_t pid = fork();
 
 		if (pid == 0)
+		{
 			execve(args[0], args, NULL);
 			perror("./shell");
 			exit(1);
+		}
 		else
+		{
 			wait(&status);
+		}
 	}
 	return (0);
 }
