@@ -8,6 +8,7 @@
 int main(void)
 {
 	int a = 40;
+
 	printf("Before forking my pId is: %d\n", getpid());
 	pid_t childProcessId = fork();
 
