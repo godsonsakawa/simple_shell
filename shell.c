@@ -1,47 +1,51 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <stddef.h>
-#include <string.h>
-#define MAX_COMMAND_LENGTH 100
-/**
-  * main - Unix commandline interpreter/ simple shell
-  *
-  * Return: 0 on success.
-  */
-int main(void)
-{
-	char command[MAX_COMMAND_LENGTH];
-	int status, i = 0;
-	char *argv[MAX_COMMAND_LENGTH];
+#include "shell.h"
 
+#define BUFFER_SIZE 256
+/**
+  * main - check the code.
+  *
+  * Return: 0 always success.
+  */
+int main(int argc, char **argv)
+{
 	while (1)
 	{
 		printf("#cisfun$ ");
-		fgets(command, MAX_COMMAND_LENGTH, stdin);
-		/* Remove trailing newline character */
-		command[strcspn(command, "\n")] = 0;
-		/* Split command into arguments */
-		char *token = strtok(command, " ");
 
-		while (token != NULL)
+		char *line = NULL;
+		size_t line_size = 0;
+		if (argc > 1)
 		{
-			argv[i++] = token;
-			token = strtok(NULL, " ");
+			line = argv[1];
+			line_size = strlen(line);
 		}
-		argv[i] = NULL;
-		/* Check for built-in commands */
-		if (strcmp(argv[0], "exit") == 0)
+		else
 		{
-			exit(0);
+			int read = getline(&line, &line_size, stdin);
+			if (read == -1)
+			{
+				printf("\n");
+				break;
+			}
 		}
-		pid_t child_pid = fork();
+		line[strcspn(line, "\n")] = 0;
 
-		if (child_pid == 0)
+		char *command = strtok(line, " ");
+		char *args[BUFFER_SIZE];
+		int i = 0, status;
+
+		while (command != NULL)
 		{
-			execve(argv[0], argv, NULL);
-			/* If execve returns, it must have failed */
+			args[i++] = command;
+			command = strtok(NULL, " ");
+		}
+		args[i] = NULL;
+
+		pid_t pid = fork();
+		
+		if (pid == 0)
+		{
+			execve(args[0], args, NULL);
 			perror("./shell");
 			exit(1);
 		}
