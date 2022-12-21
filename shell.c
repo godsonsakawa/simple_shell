@@ -34,15 +34,11 @@ int main(int argc, char **argv)
 		pid_t pid = fork();
 
 		if (pid == 0)
-		{
 			execve(args[0], args, NULL);
 			perror("./shell");
 			exit(1);
-		}
 		else
-		{
 			wait(&status);
-		}
 	}
 	return (0);
 }
